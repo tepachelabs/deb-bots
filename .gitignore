@@ -1,0 +1,54 @@
+# Node.js
+node_modules/
+
+# TypeScript
+*.tsbuildinfo
+*.tsk
+*.tsks
+
+# Visual Studio Code
+.vscode/
+*.code-workspace
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+desktop.ini
+
+# TypeScript cache
+*.tsbuildinfo
+
+# Yarn
+yarn-error.log
+
+# dotenv environment variable file
+.env
+
+# Dependency directories
+jspm_packages/
+typings/
+
+# Optional: Uncomment the following lines if you use a package manager
+# and want to ignore its directories as well.
+
+# Bower
+# bower_components/
+
+# npm
+# /npm-debug.log
+# /package-lock.json
+
+# pnpm
+# /pnpm-debug.log
+# /pnpm-lock.yaml
+
+# Yarn Integrity file
+# .yarn-integrity
+
+# Optional: Uncomment the following lines if you use Docker
+# .dockerignore
+# docker-compose.override.yml
+# docker-compose.yml
+# Dockerfile*
