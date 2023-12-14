@@ -3,6 +3,8 @@ name: 'Build & Deployment'
 on:
   push:
     branches: [ main ]
+    paths-ignore:
+      - '**/README.md'
 
 jobs:
   build:
