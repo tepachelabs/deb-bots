@@ -2,7 +2,7 @@ import express, {Application} from 'express';
 import apiRoutes from './routes/apiRoutes';
 import {initDiscord} from './bot/discord';
 import logger from "./logger";
-import {initTelegramBot} from "./bot/telegram";
+import * as telegram from "./bot/telegram";
 
 const app: Application = express();
 const port = 3000;
@@ -15,5 +15,5 @@ app.listen(port, () => {
 
 Promise.all([
   initDiscord(),
-  initTelegramBot()
+  telegram.init()
 ]).then(_value => logger.info('Bots are initialized'))
