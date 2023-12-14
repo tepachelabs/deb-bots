@@ -1,6 +1,6 @@
 import {CommandInteraction, SlashCommandBuilder} from 'discord.js';
 import {getBotMessage} from '../../../data/network';
-import {DiscordCommand} from "./types";
+import {DiscordCommand} from "../types";
 
 export const data = new SlashCommandBuilder()
   .setName('dolar')
