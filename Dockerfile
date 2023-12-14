@@ -1,6 +1,9 @@
 # Use an official Node.js runtime as the base image
 FROM node:20.10-alpine
 
+ARG GIT_COMMIT
+ENV GIT_COMMIT=$GIT_COMMIT
+
 ARG DOPPLER_TOKEN
 ENV DOPPLER_TOKEN=$DOPPLER_TOKEN
 
