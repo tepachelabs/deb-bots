@@ -1,12 +1,20 @@
 # Use an official Node.js runtime as the base image
 FROM node:20.10-alpine
 
+ARG DOPPLER_TOKEN
+ENV DOPPLER_TOKEN=$DOPPLER_TOKEN
+
 # Set the working directory in the container to /app
 WORKDIR /app
 
+# Update and install dependencies
+# Add Doppler's RSA key
+RUN wget -q -t3 'https://packages.doppler.com/public/cli/rsa.8004D9FF50437357.key' -O /etc/apk/keys/cli@doppler-8004D9FF50437357.rsa.pub
+
 # Install Doppler CLI
-RUN apk add --no-cache curl && \
-    curl -Ls https://cli.doppler.com/install.sh | sh
+# Add Doppler's apk repo
+RUN echo 'https://packages.doppler.com/public/cli/alpine/any-version/main' | tee -a /etc/apk/repositories
+RUN apk update && apk add --no-cache libffi-dev openssl-dev build-base curl doppler
 
 # Copy package.json and package-lock.json to the working directory
 COPY package*.json ./
