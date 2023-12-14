@@ -1,9 +1,5 @@
-import dataSource from './next_source';
+import { dataSource as nextDataSource } from './next_source';
 
-const getBotMessage = async () => {
-    return dataSource
-}
-
-export default {
-    getBotMessage
+export const getBotMessage = async () => {
+    return nextDataSource()
 }
