@@ -1,6 +1,6 @@
-import {Context, Telegraf} from "telegraf";
-import {Update} from "telegraf/typings/core/types/typegram";
-import {getBotMessage} from "../../data/network";
+import { Context, Telegraf } from "telegraf";
+import { Update } from "telegraf/typings/core/types/typegram";
+import { getBotMessage } from "../../data/network";
 
 const config = {
   commands: [
@@ -14,7 +14,14 @@ const config = {
 
 const responses = {
   dollar: async (ctx: Context<Update>) => {
-    const message = await getBotMessage()
+    // Try to retrieve multiplier from message
+    // @ts-ignore
+    const multiplierFromTextMessage = retrieveMultiplierFromTextMessage(ctx.message.text);
+    // Ensure multiplier is a positive number
+    const multiplier = multiplierFromTextMessage > 0 ? multiplierFromTextMessage : 1;
+    // Get message from data source, including multiplier
+    const message = await getBotMessage(multiplier);
+    // Reply to user
     await ctx.reply(message);
   },
   about: (ctx: Context<Update>) => ctx.reply('Dolarenbancos bot. More info at https://dolarenbancos.com.')
@@ -45,4 +52,9 @@ export const registerBot = async (bot: Telegraf) => {
 
   // All other commands in here
   bot.command('about', responses.about);
+}
+
+function retrieveMultiplierFromTextMessage(message: string): number {
+  const parts = message.split(' ');
+  return parts.length === 2 ? parseInt(parts[1], 10) : 1
 }
