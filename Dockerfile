@@ -22,6 +22,9 @@ RUN apk update && apk add --no-cache libffi-dev openssl-dev build-base curl dopp
 # Copy package.json and package-lock.json to the working directory
 COPY package*.json ./
 
+# Production environment
+ENV NODE_ENV=production
+
 # Install the application dependencies
 RUN npm install
 
