@@ -1,6 +1,8 @@
 import { Context, Telegraf } from "telegraf";
 import { Update } from "telegraf/typings/core/types/typegram";
 import { getBotMessage } from "../../data/network";
+import {analytics} from "../../analytics";
+import logger from "../../logger";
 
 const config = {
   commands: [
@@ -14,15 +16,27 @@ const config = {
 
 const responses = {
   dollar: async (ctx: Context<Update>) => {
-    // Try to retrieve multiplier from message
-    // @ts-ignore
-    const multiplierFromTextMessage = retrieveMultiplierFromTextMessage(ctx.message.text);
-    // Ensure multiplier is a positive number
-    const multiplier = multiplierFromTextMessage > 0 ? multiplierFromTextMessage : 1;
-    // Get message from data source, including multiplier
-    const message = await getBotMessage(multiplier);
-    // Reply to user
-    await ctx.reply(message);
+    if (ctx.message && 'text' in ctx.message) {
+
+      const chatType= 'chat' in ctx.message ? ctx.message.chat.type : 'unknown';
+      const fullCommand = ctx.message.text;
+      const commandUsedByUser = fullCommand.split(' ')[0];
+      analytics.capture(ctx.from?.username, 'used dollar command', {
+        platform: 'telegram',
+        command: commandUsedByUser,
+        chatType,
+      })
+      // Get multiplier from message
+      const multiplierFromTextMessage = retrieveMultiplierFromTextMessage(ctx.message.text);
+      // Ensure multiplier is a positive number
+      const multiplier = multiplierFromTextMessage > 0 ? multiplierFromTextMessage : 1;
+      // Get message from data source, including multiplier
+      const message = await getBotMessage(multiplier);
+      // Reply to user
+      await ctx.reply(message);
+    } else {
+      logger.error("Message is not text")
+    }
   },
   about: (ctx: Context<Update>) => ctx.reply('Dolarenbancos bot. More info at https://dolarenbancos.com.')
 }
